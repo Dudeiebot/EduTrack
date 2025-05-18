@@ -1,15 +1,16 @@
 version: "3"
 services:
   api:
-    build: 
+    build:
       context: ../
       dockerfile: Dockerfile
     image: &edu-track edu-track-dev
-    container_name: edu-track
+    container_name: edu-track-dev
     restart: on-failure
-    command: ["daphne", "-b", "0.0.0.0", "-p", "8080", "edu_track.asgi:application"]
+    command:
+      ["daphne", "-b", "0.0.0.0", "-p", "8000", "edu_track.asgi:application"]
     ports:
-      - 127.0.0.1:8000:8080
+      - 127.0.0.1:8000:8000
     environment:
       - DJANGO_SETTINGS_MODULE=edu_track.settings.dev
     env_file:
@@ -20,9 +21,9 @@ services:
     ports:
       - "6379:6379"
   celery-worker:
-    build: 
+    build:
       context: ../
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.dev
     container_name: celery-worker-dev
     restart: on-failure
     command: ["celery", "-A", "edu_track", "worker", "--loglevel=info"]
