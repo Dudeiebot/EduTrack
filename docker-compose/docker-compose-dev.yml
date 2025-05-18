@@ -1,0 +1,42 @@
+version: "3"
+services:
+  api:
+    build: 
+      context: ../
+      dockerfile: Dockerfile
+    image: &edu-track edu-track-dev
+    container_name: edu-track
+    restart: on-failure
+    command: ["daphne", "-b", "0.0.0.0", "-p", "8080", "edu_track.asgi:application"]
+    ports:
+      - 127.0.0.1:8000:8080
+    environment:
+      - DJANGO_SETTINGS_MODULE=edu_track.settings.dev
+    env_file:
+      - ../edu_track/.env
+  redis:
+    image: redis:6
+    container_name: redis-dev
+    ports:
+      - "6379:6379"
+  celery-worker:
+    build: 
+      context: ../
+      dockerfile: Dockerfile
+    container_name: celery-worker-dev
+    restart: on-failure
+    command: ["celery", "-A", "edu_track", "worker", "--loglevel=info"]
+    environment:
+      - DJANGO_SETTINGS_MODULE=edu_track.settings.dev
+    env_file:
+      - ../edu_track/.env
+    depends_on:
+      - redis
+
+volumes:
+  cache:
+    driver: local
+
+networks:
+  humdov-net:
+    driver: bridge
