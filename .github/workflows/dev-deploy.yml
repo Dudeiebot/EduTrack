@@ -6,10 +6,18 @@ on:
 
 jobs:
   deploy-to-dev:
-    runs-on: self-hosted  
+    runs-on: ubuntu-latest
     steps:
       - name: Deploy Dev Environment
-        run: |
-          cd ~/edu-track-api
-          git pull origin main
-          sudo bash dev-deploy.sh
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{ secrets.SSH_PORT }}
+          script: |
+            cd ~/edu-track-api-dev
+            git pull origin main
+            sudo bash dev-deploy.sh
+            exit
+
