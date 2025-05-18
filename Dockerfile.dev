@@ -1,0 +1,20 @@
+FROM python:3.10
+
+RUN apt-get update && \
+    apt-get install -y && \
+    python3 -m pip install --upgrade pip && \
+    pip3 install daphne 
+
+COPY . /opt/edu_track_dev
+WORKDIR /opt/edu_track_dev
+RUN uv pip install -r /opt/edu_track_dev/requirements.txt
+RUN uv pip install psycopg2-binary
+WORKDIR /opt/edu_track_dev/edu_track
+
+RUN python3 manage.py collectstatic --no-input
+RUN python3 manage.py migrate --no-input
+RUN python3 manage.py create_roles_permission
+RUN apt-get update && apt-get install -y redis-server
+EXPOSE 8000
+
+CMD ["daphne", "-b", "0.0.0.0", "-p", "8000", "ingrid_lms_config.asgi.application"];
