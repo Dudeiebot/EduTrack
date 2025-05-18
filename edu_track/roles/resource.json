@@ -1,0 +1,73 @@
+{
+  "operations": [
+    { "type": "LIST", "description": "list all resource" },
+    { "type": "CREATE", "description": "Create a resource" },
+    { "type": "VIEW", "description": "View a resource" },
+    { "type": "UPDATE", "description": "Update a resource" },
+    { "type": "DELETE", "description": "Delete a resource" }
+  ],
+  "resources": [
+    { "key": "course", "title": "Course" },
+    { "key": "user", "title": "User" },
+    { "key": "instructor", "title": "Instructor" },
+    { "key": "assignment", "title": "Assignment" },
+    { "key": "question", "title": "Question" }
+  ],
+  "roles": [
+    {
+      "name": "SystemAdmin",
+      "description": "Admin with most permissions"
+    },
+    {
+      "name": "Instructor",
+      "description": "User who can create and manage course content"
+    },
+    {
+      "name": "Student",
+      "description": "User who can access course content"
+    }
+  ],
+  "permissions": [
+    {
+      "operation": "CREATE",
+      "resource": "course",
+      "roles": ["SystemAdmin", "Instructor"]
+    },
+    {
+      "operation": "UPDATE",
+      "resource": "course",
+      "roles": ["SystemAdmin", "Instructor"]
+    },
+    {
+      "operation": "DELETE",
+      "resource": "course",
+      "roles": ["SystemAdmin", "Instructor"]
+    },
+
+    {
+      "operation": "LIST",
+      "resource": "instructor",
+      "roles": ["SystemAdmin"]
+    },
+    {
+      "operation": "UPDATE",
+      "resource": "question",
+      "roles": ["Instructor", "SystemAdmin"]
+    },
+    {
+      "operation": "DELETE",
+      "resource": "question",
+      "roles": ["Instructor", "SystemAdmin"]
+    },
+    {
+      "operation": "VIEW",
+      "resource": "assignment",
+      "roles": ["Instructor", "SystemAdmin"]
+    },
+    {
+      "operation": "CREATE",
+      "resource": "assignment",
+      "roles": ["Instructor", "SystemAdmin"]
+    }
+  ]
+}
