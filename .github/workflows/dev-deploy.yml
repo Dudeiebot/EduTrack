@@ -1,0 +1,15 @@
+name: Dev CI/CD
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy-to-dev:
+    runs-on: self-hosted  
+    steps:
+      - name: Deploy Dev Environment
+        run: |
+          cd ~/edu-track-api
+          git pull origin main
+          sudo bash dev-deploy.sh

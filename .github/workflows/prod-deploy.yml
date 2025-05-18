@@ -1,0 +1,23 @@
+name: Prod CI/CD
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy-to-production:
+    name: Deploy to Prod environment
+    runs-on: ubuntu-latest
+    steps:
+      - name: Executing remote SSH commands using key for Ingryd
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{ secrets.SSH_PORT }}
+          script: |
+            cd ~/edu-track-api-prod
+            git pull origin main
+            sudo bash prod-deploy.sh
+            exit
