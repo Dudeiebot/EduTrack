@@ -1,12 +1,6 @@
 import logging
 import functools
-import sendgrid
 from django.core.cache import cache
-from django.conf import settings
-from django.core.mail import EmailMultiAlternatives
-from django.utils.html import strip_tags
-from celery import shared_task, Task
-from sendgrid.helpers.mail import Mail, Email, To
 
 
 logger = logging.getLogger(__name__)
