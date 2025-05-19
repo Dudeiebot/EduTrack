@@ -27,5 +27,5 @@ urlpatterns = [
 
 urlpatterns = [path(f"api/v1/", include(urlpatterns))]
 
-if settings.DEBUG:
+if settings.DEBUG and getattr(settings, "STATIC_URL", None):
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
